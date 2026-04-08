@@ -1,0 +1,5 @@
+# SE Chatbot Requirements
+# Install with: pip install -r requirements.txt
+
+PyQt5==5.15.7
+mysql-connector-python==8.0.33

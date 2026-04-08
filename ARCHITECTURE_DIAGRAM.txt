@@ -1,0 +1,279 @@
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║              SE CHATBOT - SYSTEM ARCHITECTURE DIAGRAM                      ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+
+┌────────────────────────────────────────────────────────────────────────────┐
+│                                                                            │
+│  ┌─────────────────────────────────────────────────────────────────┐       │
+│  │                   USER INTERACTION LAYER                        │       │
+│  │                     (chatbot_gui.py)                            │       │
+│  │                                                                 │       │
+│  │   ┌─────────────────────────────────────────────────────────┐  │       │
+│  │   │          SE Chatbot GUI Window (PyQt5)                │  │       │
+│  │   │                                                        │  │       │
+│  │   │  ┌──────────────────────────────────────────────────┐ │  │       │
+│  │   │  │  📚 SOFTWARE ENGINEERING CHATBOT                │ │  │       │
+│  │   │  │  Ask questions about Software Engineering...   │ │  │       │
+│  │   │  ├──────────────────────────────────────────────────┤ │  │       │
+│  │   │  │  [Filter by Unit ▼]  [📜 History]             │ │  │       │
+│  │   │  ├──────────────────────────────────────────────────┤ │  │       │
+│  │   │  │                                                  │ │  │       │
+│  │   │  │  You • 10:30:45                                │ │  │       │
+│  │   │  │  ┌────────────────────────────────────────────┐ │ │  │       │
+│  │   │  │  │ What is software engineering?             │ │ │  │       │
+│  │   │  │  └────────────────────────────────────────────┘ │ │  │       │
+│  │   │  │                                                  │ │  │       │
+│  │   │  │  Chatbot • 10:30:46                            │ │  │       │
+│  │   │  │  ┌────────────────────────────────────────────┐ │ │  │       │
+│  │   │  │  │ 📚 QUESTION: What is Software           │ │ │  │       │
+│  │   │  │  │     Engineering?                         │ │ │  │       │
+│  │   │  │  │                                          │ │ │  │       │
+│  │   │  │  │ 📖 DEFINITION:                           │ │ │  │       │
+│  │   │  │  │ Software engineering is the application │ │ │  │       │
+│  │   │  │  │ of systematic, disciplined...           │ │ │  │       │
+│  │   │  │  │                                          │ │ │  │       │
+│  │   │  │  │ 💡 EXPLANATION: [detailed text...]     │ │ │  │       │
+│  │   │  │  │ 🔧 EXAMPLE: [real-world scenario...]   │ │ │  │       │
+│  │   │  │  │ ✓ CONCLUSION: [summary...]              │ │ │  │       │
+│  │   │  │  │                                          │ │ │  │       │
+│  │   │  │  │  [📋 Copy Answer]                        │ │ │  │       │
+│  │   │  │  └────────────────────────────────────────────┘ │ │  │       │
+│  │   │  │                                                  │ │  │       │
+│  │   │  ├──────────────────────────────────────────────────┤ │  │       │
+│  │   │  │ Ask me about Software Engineering...            │ │  │       │
+│  │   │  │ [                                    ]           │ │  │       │
+│  │   │  │  [🔍 Ask] [🗑️ Clear]                          │ │  │       │
+│  │   │  └──────────────────────────────────────────────────┘ │  │       │
+│  │   │                                                        │  │       │
+│  │   │  Status Bar: Ready • Database: se_chatbot_db          │  │       │
+│  │   └─────────────────────────────────────────────────────┘  │       │
+│  │                                                                 │       │
+│  └─────────────────────────────────────────────────────────────────┘       │
+│                          ▼                                                  │
+│  ┌─────────────────────────────────────────────────────────────────┐       │
+│  │                  BUSINESS LOGIC LAYER                           │       │
+│  │                (database_helper.py)                             │       │
+│  │                                                                 │       │
+│  │   ┌─────────────────────────────────────────────────────────┐  │       │
+│  │   │         Class: DatabaseHelper                           │  │       │
+│  │   │                                                         │  │       │
+│  │   │  Methods:                                              │  │       │
+│  │   │  • connect() - Establish MySQL connection             │  │       │
+│  │   │  • search_answer(question) - Two-tier search          │  │       │
+│  │   │    ├─ Stage 1: FULLTEXT search                        │  │       │
+│  │   │    └─ Stage 2: LIKE fallback search                   │  │       │
+│  │   │  • get_all_questions(unit_id)                         │  │       │
+│  │   │  • get_units() - List all units                       │  │       │
+│  │   │  • get_statistics() - Database stats                  │  │       │
+│  │   └─────────────────────────────────────────────────────────┘  │       │
+│  │                                                                 │       │
+│  │   ┌─────────────────────────────────────────────────────────┐  │       │
+│  │   │         Class: ChatHistory                              │  │       │
+│  │   │                                                         │  │       │
+│  │   │  Methods:                                              │  │       │
+│  │   │  • add_entry(question, answer, id) - Save to JSON     │  │       │
+│  │   │  • get_history() - Retrieve all entries               │  │       │
+│  │   │  • load_history() - Load from file                    │  │       │
+│  │   │  • save_history() - Persist to file                   │  │       │
+│  │   └─────────────────────────────────────────────────────────┘  │       │
+│  │                                                                 │       │
+│  └─────────────────────────────────────────────────────────────────┘       │
+│                          ▼                                                  │
+│  ┌─────────────────────────────────────────────────────────────────┐       │
+│  │                    DATA LAYER                                   │       │
+│  │                   (Data Persistence)                            │       │
+│  │                                                                 │       │
+│  │   ┌───────────────────────────┐  ┌─────────────────────────┐  │       │
+│  │   │   MySQL Database          │  │  JSON File             │  │       │
+│  │   │   (se_chatbot_db)          │  │  (chat_history.json)   │  │       │
+│  │   │                           │  │                         │  │       │
+│  │   │  ┌─────────────────────┐  │  │  [                      │  │       │
+│  │   │  │ questions_answers   │  │  │    {                    │  │       │
+│  │   │  │ ─────────────────── │  │  │      "timestamp": "...",│  │       │
+│  │   │  │ id (PK)             │  │  │      "question": "...", │  │       │
+│  │   │  │ unit_id (INDEX)     │  │  │      "answer_id": 1    │  │       │
+│  │   │  │ unit_name           │  │  │    },                   │  │       │
+│  │   │  │ question_keyword    │  │  │    ...                  │  │       │
+│  │   │  │  (INDEX, FT)        │  │  │  ]                      │  │       │
+│  │   │  │ question_title      │  │  │                         │  │       │
+│  │   │  │  (FT)               │  │  │  Persists chat          │  │       │
+│  │   │  │ definition          │  │  │  history with           │  │       │
+│  │   │  │ explanation (450)   │  │  │  timestamps for         │  │       │
+│  │   │  │ example (100)       │  │  │  evaluation             │  │       │
+│  │   │  │ conclusion (75)     │  │  │                         │  │       │
+│  │   │  │ created_at          │  │  │                         │  │       │
+│  │   │  │                     │  │  │                         │  │       │
+│  │   │  │ 50 rows total       │  │  │                         │  │       │
+│  │   │  │ 10 per unit (1-5)   │  │  │                         │  │       │
+│  │   │  │ ~80,000 total words │  │  │                         │  │       │
+│  │   │  └─────────────────────┘  │  │                         │  │       │
+│  │   │                           │  │                         │  │       │
+│  │   └───────────────────────────┘  └─────────────────────────┘  │       │
+│  │                                                                 │       │
+│  └─────────────────────────────────────────────────────────────────┘       │
+│                                                                            │
+└────────────────────────────────────────────────────────────────────────────┘
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                          DATA FLOW DIAGRAM                                 ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+User asks question
+        │
+        ▼
+┌─────────────────────┐
+│ GUI Input Handler   │ (chatbot_gui.py: get_answer())
+│ "What is agile?"    │
+└─────────────────────┘
+        │
+        ▼
+┌──────────────────────────┐
+│ Extract Keywords         │ Keywords: ["agile"]
+└──────────────────────────┘
+        │
+        ▼
+┌──────────────────────────────────────────┐
+│ Two-Tier Search (database_helper.py)     │
+├──────────────────────────────────────────┤
+│                                          │
+│  TIER 1: FULLTEXT Search                │
+│  ┌────────────────────────────────────┐ │
+│  │ MATCH(question_title, keyword)     │ │
+│  │ AGAINST('agile' IN BOOLEAN MODE)   │ │
+│  └────────────────────────────────────┘ │
+│           │                             │
+│           ▼                             │
+│      Found? ──► YES ──┐                │
+│           │          │                 │
+│           NO         ▼                 │
+│           │   Return Answer            │
+│           │          │                 │
+│           ▼          └────►┐            │
+│  TIER 2: LIKE Search      │            │
+│  ┌────────────────────────────────────┐ │
+│  │ WHERE question_keyword LIKE '%agile%'
+│  └────────────────────────────────────┘ │
+│           │                             │
+│           ▼                             │
+│      Found? ──► Return Answer           │
+│           │                             │
+│           NO                            │
+│           ▼                             │
+│      Return Null / No Answer Message    │
+│                                          │
+└──────────────────────────────────────────┘
+        │
+        ▼
+┌──────────────────────┐
+│ Format Answer:       │
+│ • Definition         │
+│ • Explanation        │
+│ • Example            │
+│ • Conclusion         │
+└──────────────────────┘
+        │
+        ▼
+┌──────────────────────┐
+│ Display in GUI       │
+│ + Add Copy Button    │
+│ + Add to History     │
+└──────────────────────┘
+        │
+        ▼
+┌──────────────────────┐
+│ Save to History File │
+│ (chat_history.json)  │
+└──────────────────────┘
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                    DATABASE SEARCH ALGORITHM                               ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+Question: "Tell me about testing in software"
+
+        ▼
+
+Extract Keywords:
+[tell, me, about, testing, in, software]
+└─► Filter (len > 2):
+    [testing, software]
+
+        ▼
+
+FULLTEXT Search (Primary):
+  MATCH(question_title, question_keyword) 
+  AGAINST('testing software' IN BOOLEAN MODE)
+
+  Results scored by relevance:
+  • "What is software testing?" ──► Score: 95 ✓ BEST MATCH
+  • "Software testing in development" ──► Score: 85
+  • "Development testing approaches" ──► Score: 75
+
+        ▼
+
+Return Top Result (Score > 0) ──► Found!
+
+IF NOT FOUND (No FULLTEXT match):
+        ▼
+LIKE Fallback Search:
+  WHERE question_keyword LIKE '%testing%'
+     OR question_keyword LIKE '%software%'
+     OR question_title LIKE '%testing%'
+     OR question_title LIKE '%software%'
+
+        ▼
+
+Return First Match or NULL
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                         FILE ORGANIZATION                                 ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+se_chatbot/
+│
+├── 🗄️  DATABASE FILES
+│   └── se_chatbot_db.sql              ← SQL script with schema + 50 answers
+│
+├── 🐍 PYTHON FILES
+│   ├── database_helper.py             ← DB operations + search logic
+│   ├── chatbot_gui.py                 ← PyQt5 GUI interface
+│   └── requirements.txt               ← Dependencies (PyQt5, mysql-connector)
+│
+├── 📖 DOCUMENTATION
+│   ├── README.md                      ← Quick reference
+│   ├── SETUP_GUIDE.md                 ← Step-by-step setup
+│   └── IMPLEMENTATION_PLAN.md         ← Architecture details
+│
+└── 📋 GENERATED AT RUNTIME
+    └── chat_history.json              ← Chat persistence (auto-created)
+
+
+╔════════════════════════════════════════════════════════════════════════════╗
+║                     QUICK FEATURE REFERENCE                               ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ FEATURE                    │ IMPLEMENTATION                              │
+├─────────────────────────────────────────────────────────────────────────┤
+│ 50 Q&A Entries             │ SQL INSERT statements (se_chatbot_db.sql)  │
+│ 10 per Unit                │ unit_id field (1-5)                         │
+│ Structured Answers         │ Definition|Explanation|Example|Conclusion   │
+│ Search Algorithm           │ Two-tier (FULLTEXT + LIKE fallback)        │
+│ Chat Display               │ Custom ChatMessage widget                   │
+│ Copy Button                │ QApplication.clipboard() integration       │
+│ Chat History               │ JSON file persistence                       │
+│ Unit Filtering             │ QComboBox dropdown                          │
+│ History Viewer             │ Dialog with timestamps                      │
+│ Clear Session              │ Remove widgets from layout                  │
+│ Status Updates             │ StatusBar messages                          │
+│ Welcome Message            │ Auto-displayed on startup                   │
+│ Error Handling             │ Try-catch with graceful fallbacks          │
+│ Database Connection        │ mysql.connector with error handling        │
+│ Cross-Platform             │ PyQt5 + pure Python (Windows/Mac/Linux)    │
+└─────────────────────────────────────────────────────────────────────────┘
+
