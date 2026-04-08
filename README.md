@@ -212,7 +212,3 @@ For issues or questions:
 
 ---
 
-**Created**: November 2025
-**Last Updated**: November 2025
-**Database Entries**: 50 (10 per unit)
-**Units Covered**: 5
