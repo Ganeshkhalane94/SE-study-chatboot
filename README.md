@@ -146,7 +146,7 @@ The default database configuration in `database_helper.py`:
 ```python
 host="localhost"
 user="root"
-password="Forgot@1234"
+password="Your_Password"
 database="se_chatbot_db"
 ```
 
